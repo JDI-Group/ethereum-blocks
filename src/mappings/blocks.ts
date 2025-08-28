@@ -1,12 +1,12 @@
 import {
-    EthereumBlock
+    ethereum
 } from "@graphprotocol/graph-ts"
 
 import {
     Block
 } from "../../generated/schema"
 
-export function handleBlock(block: EthereumBlock): void {
+export function handleBlock(block: ethereum.Block): void {
     let id = block.hash.toHex()
     let blockEntity = new Block(id);
     blockEntity.number = block.number;
@@ -22,5 +22,14 @@ export function handleBlock(block: EthereumBlock): void {
     blockEntity.stateRoot = block.stateRoot.toHex();
     blockEntity.size = block.size;
     blockEntity.unclesHash = block.unclesHash.toHex();
+    
+    // EIP-1559 fields
+    if (block.baseFeePerGas) {
+        blockEntity.baseFeePerGas = block.baseFeePerGas;
+    }
+    
+    // Additional fields
+    blockEntity.hash = block.hash.toHex();
+    
     blockEntity.save();
-  }
+}

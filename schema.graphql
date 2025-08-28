@@ -1,4 +1,4 @@
-type Block @entity {
+type Block @entity(immutable: true) {
   id: ID!
   number: BigInt!
   timestamp: BigInt!
@@ -13,4 +13,8 @@ type Block @entity {
   stateRoot: String
   size: BigInt
   unclesHash: String
+  # EIP-1559 fields
+  baseFeePerGas: BigInt
+  # Additional fields
+  hash: String
 }
